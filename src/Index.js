@@ -5,11 +5,12 @@ import App from './components/App';
 import Sort from './components/Sort';
 import SortList from './components/SortList';
 import About from './components/About';
-import Play from './components/Play';
+import Play from './Player';
 import Video from './components/Video';
 
-
 window.React = React;
+//是否加载完成
+window.load = false;
 
 render(
   (<Router>

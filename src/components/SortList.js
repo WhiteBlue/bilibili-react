@@ -15,7 +15,7 @@ export default React.createClass({
   refreshList:function(page){
     var oldList = this.state.list;
     $.ajax({
-      method: "get",
+      method: 'get',
       url: Lib.BaseUrl + '/sort/' + this.props.params.mid + '?count=10&page=' + page,
       context: this,
       success: function (data) {
@@ -40,7 +40,7 @@ export default React.createClass({
               page:page
             });
           }
-        }else{
+        } else {
           this.setState({error: true});
         }
       },
@@ -68,9 +68,9 @@ export default React.createClass({
     }
     return (this.state.isLoad) ? (
       <div>
-        <AMUIReact.Titlebar theme="cols" title={ Lib.Sorts[this.props.params.mid] } key="title"/>
-        <AMUIReact.ListNews data={data} thumbPosition="left" key="list"/>
-        <p className="am-text-center"><Lib.LoadingButton block clickHandler={handler} loadingText="正在加载..." key="load-btn">加载更多</Lib.LoadingButton>
+        <AMUIReact.Titlebar theme='cols' title={ Lib.Sorts[this.props.params.mid] } key='title'/>
+        <AMUIReact.ListNews data={data} thumbPosition='left' key='list'/>
+        <p className='am-text-center'><Lib.LoadingButton block clickHandler={handler} loadingText='正在加载...' key='load-btn'>加载更多</Lib.LoadingButton>
         </p>
       </div>) : <Lib.LoadingWidght />;
   }

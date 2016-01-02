@@ -2,9 +2,6 @@ import videojs from 'video.js'
 
 videojs.plugin('ABP', function () {
   function Danmu(ele) {
-    ///////////////////////////////////////////
-    ///Prepare the html element for the plugin.
-    ///////////////////////////////////////////
     var _this = this;
     this.danmuDiv = document.createElement('div');
     this.danmuDiv.className = 'vjs-danmu';
@@ -13,13 +10,10 @@ videojs.plugin('ABP', function () {
     this.danmuShowControl = document.createElement('div');
     this.danmuShowControl.className = 'vjs-danmu-control vjs-menu-button vjs-control';
     this.danmuShowControlContent = document.createElement('span');
-    this.danmuShowControlContent.className = 'player_glyphicon glyphicon glyphicon-eye-open';
+    this.danmuShowControlContent.className = 'glyphicon glyphicon-eye-open';
     this.danmuShowControl.appendChild(this.danmuShowControlContent);
     ele.el().getElementsByClassName('vjs-control-bar')[0].appendChild(this.danmuShowControl);
 
-    ///////////////////////////////////////////
-    //Bind CommentManager.
-    ///////////////////////////////////////////
     if (typeof CommentManager !== "undefined") {
       this.cmManager = new CommentManager(this.danmuDiv);
       this.cmManager.display = true;
@@ -77,10 +71,10 @@ videojs.plugin('ABP', function () {
         if (_this.cmManager.display == true) {
           _this.cmManager.display = false;
           _this.cmManager.clear();
-          _this.danmuShowControlContent.setAttribute("class", "player_glyphicon glyphicon glyphicon-eye-close");
+          _this.danmuShowControlContent.setAttribute("class", "glyphicon glyphicon-eye-close");
         } else {
           _this.cmManager.display = true;
-          _this.danmuShowControlContent.setAttribute("class", "player_glyphicon glyphicon glyphicon-eye-open");
+          _this.danmuShowControlContent.setAttribute("class", "glyphicon glyphicon-eye-open");
         }
       });
 
@@ -93,7 +87,8 @@ videojs.plugin('ABP', function () {
         var xmlhttp;
         if (window.XMLHttpRequest) {
           xmlhttp = new XMLHttpRequest();
-        } else {
+        }
+        else {
           xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
         xmlhttp.open("GET", url, true);

@@ -1,6 +1,28 @@
 #content {
-  margin-top: 48px;
+  margin-top: 49px;
   margin-bottom: 50px;
+}
+
+.index-appear {
+  opacity: 0.01;
+}
+
+.index-appear.index-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.start-bg {
+  width: 100%;
+}
+
+.index-footer {
+  margin: 20px auto;
+}
+
+#video-container {
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 /*原生弹幕*/
@@ -11,6 +33,11 @@
 .loading-content {
   height: 400px;
   padding-top: 100px;
+}
+
+.starting-content {
+  max-width: 800px;
+  margin: 100px auto auto auto;
 }
 
 .abp .container {
