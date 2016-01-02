@@ -1,5 +1,8 @@
 node_modules
-
+.tmp
+.idea
 dist
+.publish
+
 
 *.mp4
