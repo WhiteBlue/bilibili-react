@@ -25,6 +25,11 @@
   margin-bottom: 20px;
 }
 
+#search-form{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 /*原生弹幕*/
 .abp {
   position: relative;
