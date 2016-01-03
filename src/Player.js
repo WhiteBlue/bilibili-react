@@ -7,17 +7,20 @@ import Lib from './Lib'
 
 export default React.createClass({
   getVideo: function (cid, quality) {
-    $.ajax({
-      method: 'get',
-      url: Lib.BaseUrl + '/video/' + cid + "?quality=" + quality,
-      context: this,
-      success: function (data) {
-        this.videoPlayer.load(data.url, 'http://comment.bilibili.com/' + cid + '.xml');
-      },
-      error: function () {
-        this.setState({error: true});
-      }
-    });
+    if (this.hasOwnProperty('videoPlayer')) {
+      $.ajax({
+        method: 'get',
+        url: Lib.BaseUrl + '/video/' + cid + "/" + quality,
+        context: this,
+        success: function (data) {
+          this.videoPlayer.clearDanmu();
+          this.videoPlayer.load(data.url, 'http://comment.bilibili.com/' + cid + '.xml');
+        },
+        error: function () {
+          this.setState({error: true});
+        }
+      });
+    }
   },
   //播放器资源回收
   playerClear: function () {
@@ -29,18 +32,24 @@ export default React.createClass({
     return {
       cid: null,
       quality: 1,
-      error: false
+      error: false,
+      playerError: false
     };
   },
   componentDidMount: function () {
-    this.setState({cid: this.props.cid});
+    try {
+      this.videoPlayer = loadVideojs('danmu-player', {
+        controls: true,
+        preload: 'auto',
+        width: document.getElementById('video-container').offsetWidth,
+        poster: this.props.poster
+      });
+      this.setState({cid: this.props.cid});
+    } catch (err) {
+      this.setState({playerError: true});
+    }
   },
   componentDidUpdate: function (prevProps, prevState) {
-    this.videoPlayer = loadVideojs('danmaku_player', {
-      controls: true,
-      preload: 'auto',
-      width: document.getElementById('video-container').offsetWidth
-    });
     this.getVideo(this.state.cid, this.state.quality);
   },
   componentWillUnmount: function () {
@@ -55,6 +64,7 @@ export default React.createClass({
       } else {
         this.setState({cid: this.props.list[index[1]]});
       }
+      this.closeAll();
     }
   },
   render: function () {
@@ -70,9 +80,10 @@ export default React.createClass({
     var data = [{
       link: '##',
       title: '清晰度',
-      subCols: 2,
+      subCols: 3,
       subMenu: [{link: '##', title: '低清'}, {link: '##', title: '高清'}, {link: '##', title: '原画'}]
     }];
+    alert(menuList.length);
     if (menuList.length > 0) {
       data.push({
         link: '##',
@@ -86,8 +97,8 @@ export default React.createClass({
     }
     return <AMUIReact.Grid>
       <AMUIReact.Menu cols={3} data={data} theme='dropdown2' onSelect={this.handleClick}/>
-      <AMUIReact.Col md={8} mdOffset={2} id='video-container' style={{padding:'0'}}>
-        <video id='danmaku_player' className='video-js vjs-default-skin'/>
+      <AMUIReact.Col md={8} mdOffset={2} id='video-container'>
+        <video className='video-js vjs-default-skin' id="danmu-player" />
       </AMUIReact.Col>
     </AMUIReact.Grid>;
   }

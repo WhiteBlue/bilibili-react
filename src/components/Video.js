@@ -68,7 +68,7 @@ export default React.createClass({
       return <Lib.ErrorWidght />
     }
     return (this.state.isLoad) ?
-      <div><Player cid={this.state.video.cid} list={this.state.list}/><VideoInfo data={this.state.data}/></div> :
+      <div><Player cid={this.state.video.cid} list={this.state.list} poster={ this.state.data.pic }/><VideoInfo data={this.state.data}/></div> :
       <div><Lib.LoadingWidght /></div>;
   }
 });

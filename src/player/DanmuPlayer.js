@@ -117,7 +117,6 @@ videojs.plugin('ABP', function () {
     }
     return this;
   }
-
   this.danmu = new Danmu(this);
 });
 
@@ -128,8 +127,8 @@ export default function loadVideojs(element_id, params) {
   };
   videoPlayer.load = function (video, danmu) {
     this.videoJs.src(video);
-    this.videoJs.ABP();
-    this.videoJs.danmu.load(danmu);
+    //this.videoJs.ABP();
+    //this.videoJs.danmu.load(danmu);
   };
   videoPlayer.changeSize = function (width, height) {
     this.videoJs.width(width);
@@ -138,6 +137,12 @@ export default function loadVideojs(element_id, params) {
   videoPlayer.clearPlayer = function () {
     this.videoJs.dispose();
   };
+  videoPlayer.clearDanmu=function(){
+    if(this.videoJs.hasOwnProperty('danmu')){
+      this.videoJs.danmu.cmManager.clear();
+    }
+  };
+
   return videoPlayer;
 }
 

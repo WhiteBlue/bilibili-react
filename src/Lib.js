@@ -31,7 +31,8 @@ export default {
   StartWidght: React.createClass({
     render: function () {
       return (<div className='am-text-center starting-content'>
-          <ReactCSSTransitionGroup transitionName='index' transitionEnterTimeout={0} transitionLeaveTimeout={0} transitionAppear={true} transitionAppearTimeout={500}>
+          <ReactCSSTransitionGroup transitionName='index' transitionEnterTimeout={0} transitionLeaveTimeout={0}
+                                   transitionAppear={true} transitionAppearTimeout={500}>
             <img className='start-bg' src='dist/images/bilibili_index.jpg'/>
           </ReactCSSTransitionGroup>
         </div>
@@ -47,11 +48,16 @@ export default {
       </div>;
     }
   }),
-  FooterWidght:React.createClass({
-    render:function(){
+  FooterWidght: React.createClass({
+    render: function () {
       return <div className='am-text-center index-footer'>
         <p>CopyRight©2016 WhiteBlue.</p>
       </div>
+    }
+  }),
+  LoadingDialog: React.createClass({
+    render: function () {
+      return <AMUIReact.Modal type="loading" title="正在加载..."/>;
     }
   }),
   //加载按钮
