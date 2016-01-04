@@ -1,9 +1,9 @@
 import React from 'react';
 import AMUIReact from 'amazeui-react';
 
-import Lib from '../Lib'
+import Lib from '../Lib';
 
-export default React.createClass({
+var SortList = React.createClass({
   getInitialState: function () {
     return {
       list: [],
@@ -12,14 +12,14 @@ export default React.createClass({
       isLoad: false
     };
   },
-  refreshList:function(page){
+  refreshList: function (page) {
     var oldList = this.state.list;
     $.ajax({
       method: 'get',
-      url: Lib.BaseUrl + '/sort/' + this.props.params.mid + '?count=10&page=' + page,
+      url: Lib.BaseUrl + '/sort/' + this.props.mid + '?count=10&page=' + page,
       context: this,
       success: function (data) {
-        if ( data.code == 0) {
+        if (data.code == 0) {
           var list = [];
           for (var key in data.list) {
             if (data.list.hasOwnProperty(key)) {
@@ -37,7 +37,7 @@ export default React.createClass({
             this.setState({
               list: list,
               isLoad: true,
-              page:page
+              page: page
             });
           }
         } else {
@@ -68,10 +68,17 @@ export default React.createClass({
     }
     return (this.state.isLoad) ? (
       <div>
-        <AMUIReact.Titlebar theme='cols' title={ Lib.Sorts[this.props.params.mid] } key='title'/>
+        <AMUIReact.Titlebar theme='cols' title={ Lib.Sorts[this.props.mid] } key='title'/>
         <AMUIReact.ListNews data={data} thumbPosition='left' key='list'/>
-        <p className='am-text-center'><Lib.LoadingButton block clickHandler={handler} loadingText='正在加载...' key='load-btn'>加载更多</Lib.LoadingButton>
+        <p className='am-text-center'><Lib.LoadingButton block clickHandler={handler} loadingText='正在加载...'
+                                                         key='load-btn'>加载更多</Lib.LoadingButton>
         </p>
       </div>) : <Lib.LoadingWidght />;
+  }
+});
+
+export default React.createClass({
+  render: function () {
+    return <SortList mid={this.props.params.mid}/>;
   }
 });

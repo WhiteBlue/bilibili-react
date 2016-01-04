@@ -39,6 +39,25 @@ export default {
       );
     }
   }),
+  Header: React.createClass({
+    render: function () {
+      var part = [];
+      if (this.props.path != '/') {
+        part = {
+          link: '#/back',
+          icon: 'chevron-left'
+        }
+      }
+      var props = {
+        title: 'BiliBili-Html5',
+        link: '#/',
+        data: {
+          left: [part]
+        }
+      };
+      return <AMUIReact.Header {...props} className='am-header-fixed'/>;
+    }
+  }),
   //错误部件
   ErrorWidght: React.createClass({
     render: function () {
@@ -48,11 +67,20 @@ export default {
       </div>;
     }
   }),
-  FooterWidght: React.createClass({
+  BadErrorWidght: React.createClass({
     render: function () {
-      return <div className='am-text-center index-footer'>
-        <p>CopyRight©2016 WhiteBlue.</p>
-      </div>
+      return <div className='am-text-center loading-content'>
+        <i className='am-icon-exclamation-circle am-icon-lg'/>
+        <p>服务器连接异常,请检查你的网络连接</p>
+      </div>;
+    }
+  }),
+  NoMoreWidght: React.createClass({
+    render: function () {
+      return <div className='am-text-center loading-content'>
+        <i className='am-icon-circle-o am-icon-lg'/>
+        <p>再怎么找也没有啦~</p>
+      </div>;
     }
   }),
   LoadingDialog: React.createClass({
@@ -96,5 +124,6 @@ export default {
       );
     }
   })
-};
+}
+;
 

@@ -116,12 +116,12 @@ var ContentList = React.createClass({
           rendList.push(<SPList key="spList" list={ allData.special }/>);
           break;
       }
-      if (!this.props.noMore) {
+      if (this.props.allPage[type] > this.props.page) {
         rendList.push(<Lib.LoadingButton block clickHandler={this.props.handler} loadingText='正在加载...' key='load-btn'>加载更多</Lib.LoadingButton>)
       }
       return <div>{rendList}</div>;
     }
-    return <div>null</div>;
+    return <Lib.NoMoreWidght />;
   }
 });
 
@@ -134,38 +134,36 @@ var selectData = [
 
 
 var SearchContent = React.createClass({
-  getSearch: function (content, page, order, type) {
+  getSearch: function (content, page, order) {
     $.ajax({
       method: 'post',
       url: Lib.BaseUrl + '/search',
       data: {content: content, count: 15, page: page, order: order},
       context: this,
       success: function (data) {
-
         var allData = this.state.data;
-        var oldNum = this.state.data[type].length;
+        //页码为1重置
         if (page == 1) {
-          allData[type] = data.result[type];
-        } else {
-          allData[type] = allData[type].concat(data.result[type]);
+          allData = {video: [], bangumi: [], special: [], upuser: []};
         }
-        if (allData[type].length == oldNum) {
-          this.setState({
-            content: content,
-            noMore: true,
-            loading: false,
-            type: type,
-            page: page
-          });
-        } else {
-          this.setState({
-            content: content,
-            data: allData,
-            loading: false,
-            page: page,
-            type: type
-          });
+        for (var dataType in allData) {
+          allData[dataType] = allData[dataType].concat(data.result[dataType]);
         }
+        var allPage = {
+          video: data.page_info.video.pages,
+          bangumi: data.page_info.bangumi.pages,
+          special: data.page_info.special.pages,
+          upuser: data.page_info.upuser.pages
+        };
+        this.setState({
+          content: content,
+          data: allData,
+          loading: false,
+          page: page,
+          allPage: allPage,
+          error: false,
+          isLoad: true
+        });
       },
       error: function () {
         this.setState({error: true});
@@ -178,28 +176,35 @@ var SearchContent = React.createClass({
       error: false,
       loading: false,
       order: 'hot',
+      //默认分类
       type: 'video',
       page: 1,
-      noMore: false,
-      data: {video: [], bangumi: [], special: [], upuser: []}
+      //总共页数
+      allPage: {video: 1, bangumi: 1, special: 1, upuser: 1},
+      //各分类分页数据
+      data: {video: [], bangumi: [], special: [], upuser: []},
+      //是否首次访问
+      isLoad: false
     };
   },
   handleSubmit: function (e) {
     e.preventDefault();
     var value = document.getElementById('search_content').value;
-    this.getSearch(value, this.state.page, this.state.order, this.state.type);
+    this.getSearch(value, 1, this.state.order);
     this.setState({loading: true});
   },
   //切换分类
   handleTypeClick: function (nav, index, e) {
     if (nav) {
       e.preventDefault();
-      this.getSearch(this.state.content, 1, this.state.order, nav.link);
+      if (this.state.type != nav.link) {
+        this.setState({type: nav.link});
+      }
     }
   },
   pageAdd: function () {
     alert(this.state.page + 1);
-    this.getSearch(this.state.content, this.state.page + 1, this.state.order, this.state.type);
+    this.getSearch(this.state.content, this.state.page + 1, this.state.order);
   },
   render: function () {
     var btnSearch = <AMUIReact.Button type='submit'><AMUIReact.Icon icon="search"/></AMUIReact.Button>;
@@ -213,9 +218,9 @@ var SearchContent = React.createClass({
       <AMUIReact.Grid>
         <AMUIReact.Col md={8} mdOffset={2}>
           {(this.state.error ? (<Lib.ErrorWidght />) : (this.state.loading ? <Lib.LoadingWidght /> :
-            <div><AMUIReact.Menu cols={4} data={selectData} onSelect={this.handleTypeClick}/>
-              <ContentList handler={ this.pageAdd } noMore={ this.state.noMore} data={ this.state.data }
-                           type={ this.state.type }/></div>))}
+            (this.state.isLoad) ? <div><AMUIReact.Menu cols={4} data={selectData} onSelect={this.handleTypeClick}/>
+              <ContentList handler={ this.pageAdd } allPage={ this.state.allPage} data={ this.state.data }
+                           type={ this.state.type } page={ this.state.page }/></div> : <div>welcome</div>))}
         </AMUIReact.Col>
       </AMUIReact.Grid>
     </div>;

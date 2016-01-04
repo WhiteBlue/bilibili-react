@@ -4,97 +4,53 @@ import AMUIReact from 'amazeui-react';
 
 import Lib from '../Lib'
 
-var IndexHeader = React.createClass({
+
+var IndexPage = React.createClass({
   render: function () {
-    var props = {
-      title: 'BiliBili-Html5',
-      link: '#/',
-      data: {
-        left: [
-          {
-            link: '#/about',
-            icon: 'info'
-          }
-        ]
-      }
-    };
-    return <AMUIReact.Header {...props} className='am-header-fixed'/>;
-  }
-});
-
-
-var IndexList = React.createClass({
-  getInitialState: function () {
-    return {
-      list: [],
-      error: false,
-      isLoad: false
-    };
-  },
-  refreshApp: function () {
-    $.ajax({
-      method: 'get',
-      url: Lib.BaseUrl + '/topinfo',
-      context: this,
-      success: function (data) {
-        var renderResult = [];
-        var navData = [{
-          title: '更新于 : 2016-1-3 20:8'
-        }];
-        for (var i = 0; i < Lib.IndexList.length; i++) {
-          var sortName = Lib.IndexList[i];
-          if (data.hasOwnProperty(sortName)) {
-            var list = data[sortName];
-            var renderList = [];
-            for (var j = 0; j < list.length - 1; j++) {
-              renderList.push({
-                img: list[j].pic,
-                link: '#/play/' + list[j].aid,
-                title: list[j].title,
-                desc: list[j].create
-              });
-            }
-            renderResult.push(<div key={ sortName }><AMUIReact.Divider /><AMUIReact.Titlebar theme='multi' title={ sortName } nav={navData}/>
-              <AMUIReact.Gallery theme='bordered' data={ renderList }/></div>);
-          }
-        }
-        var loadClear = function () {
-          if (this.isMounted()) {
-            this.setState({
-              list: renderResult,
-              isLoad: true
-            });
-            window.load = true;
-          }
-        }.bind(this);
-
-        if (!window.load) {
-          setTimeout(function () {
-            loadClear();
-          }.bind(this), 500);
-        } else {
-          loadClear();
-        }
-      },
-      error: function () {
-        this.setState({error: true});
-      }
-    });
-  },
-  componentDidMount: function () {
-    this.refreshApp();
-  },
-  render: function () {
-    if (this.state.error) {
-      return <Lib.ErrorWidght />
+    var data = this.props.data;
+    var banners = data.banners;
+    var bannerInsert = [];
+    for (var i = 0; i < banners.length; i++) {
+      bannerInsert.push({img: banners[i].img, desc: banners[i].title});
     }
-    return (this.state.isLoad) ? <div>{ this.state.list }</div> : (window.load ? <Lib.LoadingWidght /> :
-      <Lib.StartWidght />);
+    var recommands = data.recommends;
+    var videosInsert = [];
+    for (var j = 0; j < recommands.length; j++) {
+      videosInsert.push({
+        img: recommands[j].pic,
+        link: '#/play/' + recommands[j].aid,
+        title: recommands[j].title,
+        desc: '点击:' + recommands[j].play + '||弹幕:' + recommands[j].video_review
+      });
+    }
+
+    return <AMUIReact.Grid>
+      <AMUIReact.Col md={8} mdOffset={2}>
+        <AMUIReact.Slider>
+          {bannerInsert.map(function (item, i) {
+            return (
+              <AMUIReact.Slider.Item key={i}>
+                <a href="#">
+                  <img src={item.img}/>
+                  <div className="am-slider-desc">
+                    {item.desc}
+                  </div>
+                </a>
+              </AMUIReact.Slider.Item>
+            );
+          })}
+        </AMUIReact.Slider>
+        <AMUIReact.Titlebar title="热门推荐"/>
+        <AMUIReact.Panel>
+          <AMUIReact.Gallery theme='imgbordered' data={videosInsert}/>
+        </AMUIReact.Panel>
+      </AMUIReact.Col>
+    </AMUIReact.Grid>
   }
 });
 
 
-export const DefaultFooter = React.createClass({
+var DefaultFooter = React.createClass({
   render: function () {
     var data = [
       {
@@ -103,8 +59,8 @@ export const DefaultFooter = React.createClass({
         icon: 'tag'
       },
       {
-        title: '追番',
-        link: '#/bangumi',
+        title: '排行',
+        link: '#/rank',
         icon: 'tasks'
       },
       {
@@ -118,12 +74,43 @@ export const DefaultFooter = React.createClass({
 });
 
 export default React.createClass({
+  loadingStartData: function () {
+    $.ajax({
+      method: 'get',
+      url: Lib.BaseUrl + '/indexinfo',
+      context: this,
+      success: function (data) {
+        if (data.code == 0) {
+          this.setState({load: true, data: data.result})
+        } else {
+          this.setState({error: true, load: true});
+        }
+      },
+      error: function () {
+        this.setState({error: true, load: true});
+      }
+    });
+  },
+  getInitialState: function () {
+    return {
+      data: null,
+      load: false,
+      error: false
+    }
+  },
   render() {
+    if (!this.state.load) {
+      this.loadingStartData();
+      return <Lib.StartWidght />;
+    }
+    if (this.state.error) {
+      return <Lib.BadErrorWidght />;
+    }
     return (
       <div>
-        <IndexHeader />
+        <Lib.Header path={this.props.location.pathname}/>
         <section>
-          {this.props.children || <IndexList />}
+          {this.props.children || <IndexPage data={ this.state.data }/>}
         </section>
         <DefaultFooter />
       </div>
