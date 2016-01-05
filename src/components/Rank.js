@@ -73,6 +73,6 @@ var RankList = React.createClass({
 
 export default React.createClass({
   render: function () {
-    return <RankList />;
+    return <div className="am-animation-slide-bottom"><RankList /></div>;
   }
 });

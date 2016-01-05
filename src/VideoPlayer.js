@@ -110,8 +110,8 @@ var Video = React.createClass({
   getVideoPlayerOptions: function () {
     return _defaults(
       {}, this.props.options, {
-        //height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
-        //width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
+        height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
+        width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
       }, DEFAULT_VIDEO_OPTIONS);
   },
   getVideoResizeOptions: function () {
@@ -157,23 +157,17 @@ var Video = React.createClass({
     this._player = vjs(this.getVideoPlayerEl(), options);
 
     var player = this._player;
-
     player.ready(this.handleVideoPlayerReady);
-
     _forEach(this.props.eventListeners, function (val, key) {
       player.on(key, val);
     });
-
     player.src(src);
-
     if (this.props.poster) {
       player.poster(this.props.poster);
     }
-
     if (this.props.endlessMode) {
       this.addEndlessMode();
     }
-
     //加载弹幕插件
     Plugin.load(player);
     player.ABP();

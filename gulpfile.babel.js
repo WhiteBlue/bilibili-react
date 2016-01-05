@@ -68,35 +68,35 @@ gulp.task('watchify', () => {
   }
 
   bundler.transform(babelify)
-  .on('update', rebundle);
+    .on('update', rebundle);
   return rebundle();
 });
 
 gulp.task('browserify', () => {
   browserify(paths.srcJsx, {debug: true})
-  .transform(babelify)
-  .bundle()
-  .pipe(source(paths.bundle))
-  .pipe(buffer())
-  .pipe(sourcemaps.init({loadMaps: true}))
-  .pipe(uglify())
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.distJs));
+    .transform(babelify)
+    .bundle()
+    .pipe(source(paths.bundle))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.distJs));
 });
 
 gulp.task('styles', () => {
   gulp.src(paths.srcCss)
-  .pipe(sourcemaps.init())
-  .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.dist))
-  .pipe(reload({stream: true}));
+    .pipe(sourcemaps.init())
+    .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.dist))
+    .pipe(reload({stream: true}));
 });
 
 gulp.task('htmlReplace', () => {
   gulp.src('index.html')
-  .pipe(htmlReplace({css: 'styles/main.css', js: 'js/app.js'}))
-  .pipe(gulp.dest(paths.dist));
+    .pipe(htmlReplace({css: 'styles/main.css', js: 'js/app.js'}))
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('images', () => {
@@ -111,8 +111,8 @@ gulp.task('images', () => {
 
 gulp.task('lint', () => {
   gulp.src(paths.srcLint)
-  .pipe(eslint())
-  .pipe(eslint.format());
+    .pipe(eslint())
+    .pipe(eslint.format());
 });
 
 gulp.task('watchTask', () => {
@@ -120,7 +120,7 @@ gulp.task('watchTask', () => {
   gulp.watch(paths.srcJsx, ['lint']);
 });
 
-gulp.task('deploy', function() {
+gulp.task('deploy', function () {
   return gulp.src(paths.distDeploy)
     .pipe(ghPages());
 });
@@ -133,3 +133,13 @@ gulp.task('build', cb => {
   process.env.NODE_ENV = 'production';
   runSequence('clean', ['browserify', 'styles', 'htmlReplace', 'images'], cb);
 });
+
+
+//js压缩处理
+gulp.task('script', function () {
+  gulp.src('dist/js/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('minify/js'))
+});
+
+

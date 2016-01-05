@@ -7,7 +7,7 @@ const SortList = React.createClass({
     var list = [];
     for (var key in Lib.Sorts) {
       if (Lib.Sorts.hasOwnProperty(key)) {
-        list.push(<AMUIReact.ListItem href={ '#/sort/'+key } key={key} >{ Lib.Sorts[key] }</AMUIReact.ListItem>);
+        list.push(<AMUIReact.ListItem href={ '#/sort/'+key } key={key}>{ Lib.Sorts[key] }</AMUIReact.ListItem>);
       }
     }
     return (
@@ -21,8 +21,8 @@ const SortList = React.createClass({
 export default React.createClass({
   render() {
     return (
-      <div>
-        <SortList />
+      <div className="am-animation-slide-left">
+        <SortList/>
       </div>
     );
   }

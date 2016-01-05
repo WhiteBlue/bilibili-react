@@ -102,7 +102,7 @@ var SP = React.createClass({
 export default React.createClass({
   render() {
     return (
-      <div>
+      <div className="am-animation-slide-bottom">
         <SP spid={ this.props.params.spid }/>
       </div>
     );

@@ -4,7 +4,7 @@ import AMUIReact from 'amazeui-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
 export default {
-  BaseUrl: 'http://localhost:8080',
+  BaseUrl: 'http://bilibili-service.daoapp.io',
   //分类
   Sorts: {
     1: '动画',
@@ -124,6 +124,5 @@ export default {
       );
     }
   })
-}
-;
+};
 

@@ -56,7 +56,7 @@ var BangumiList = React.createClass({
     for (var i = 0; i < list.length; i++) {
       insetList.push({
         title: list[i].title,
-        link: '#',
+        link: '#/sp/' + list[i].spid,
         desc: list[i].evaluate,
         img: list[i].cover
       });
@@ -79,7 +79,7 @@ var SPList = React.createClass({
     for (var i = 0; i < list.length; i++) {
       insetList.push({
         title: list[i].title,
-        link: '#',
+        link: '#/sp/' + list[i].spid,
         desc: list[i].description,
         img: list[i].pic
       });
@@ -131,7 +131,6 @@ var selectData = [
   {link: 'bangumi', title: '新番'},
   {link: 'special', title: '专题'},
   {link: 'upuser', title: 'up主'}];
-
 
 var SearchContent = React.createClass({
   getSearch: function (content, page, order) {
@@ -220,7 +219,7 @@ var SearchContent = React.createClass({
           {(this.state.error ? (<Lib.ErrorWidght />) : (this.state.loading ? <Lib.LoadingWidght /> :
             (this.state.isLoad) ? <div><AMUIReact.Menu cols={4} data={selectData} onSelect={this.handleTypeClick}/>
               <ContentList handler={ this.pageAdd } allPage={ this.state.allPage} data={ this.state.data }
-                           type={ this.state.type } page={ this.state.page }/></div> : <div>welcome</div>))}
+                           type={ this.state.type } page={ this.state.page }/></div> : <div></div>))}
         </AMUIReact.Col>
       </AMUIReact.Grid>
     </div>;
@@ -229,6 +228,8 @@ var SearchContent = React.createClass({
 
 export default React.createClass({
   render: function () {
-    return <SearchContent />;
+    return <div className="am-animation-slide-right">
+      <SearchContent />
+    </div>;
   }
 });

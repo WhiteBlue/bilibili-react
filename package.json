@@ -1,11 +1,11 @@
 {
   "name": "bilibili-html5",
   "version": "2.1.4",
-  "description": "a webapp by react & amaze ui",
+  "description": "a webapp by react.js & amaze ui",
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Granze/react-starterify"
+    "url": "https://github.com/WhiteBlue/bilibili-react"
   },
   "keywords": [
     "gulp",
@@ -29,9 +29,9 @@
   "author": "Maurizio Mangione",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Granze/react-starterify/issues"
+    "url": "https://github.com/WhiteBlue/bilibili-react/issues"
   },
-  "homepage": "https://github.com/Granze/react-starterify",
+  "homepage": "https://github.com/WhiteBlue/bilibili-react",
   "dependencies": {
     "history": "^1.17.0",
     "react": "^0.14.0",

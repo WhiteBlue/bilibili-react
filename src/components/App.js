@@ -11,7 +11,7 @@ var IndexPage = React.createClass({
     var banners = data.banners;
     var bannerInsert = [];
     for (var i = 0; i < banners.length; i++) {
-      bannerInsert.push({img: banners[i].img, desc: banners[i].title});
+      bannerInsert.push({img: banners[i].img, desc: banners[i].title, aid: banners[i].aid});
     }
     var recommands = data.recommends;
     var videosInsert = [];
@@ -23,14 +23,13 @@ var IndexPage = React.createClass({
         desc: '点击:' + recommands[j].play + '||弹幕:' + recommands[j].video_review
       });
     }
-
     return <AMUIReact.Grid>
       <AMUIReact.Col md={8} mdOffset={2}>
         <AMUIReact.Slider>
           {bannerInsert.map(function (item, i) {
             return (
               <AMUIReact.Slider.Item key={i}>
-                <a href="#">
+                <a href={ '#/play/'+item.aid }>
                   <img src={item.img}/>
                   <div className="am-slider-desc">
                     {item.desc}
@@ -110,7 +109,8 @@ export default React.createClass({
       <div>
         <Lib.Header path={this.props.location.pathname}/>
         <section>
-          {this.props.children || <IndexPage data={ this.state.data }/>}
+          {this.props.children ||
+          <div className="am-animation-slide-bottom"><IndexPage data={ this.state.data }/></div>}
         </section>
         <DefaultFooter />
       </div>
