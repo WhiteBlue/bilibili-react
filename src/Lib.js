@@ -33,7 +33,7 @@ export default {
       return (<div className='am-text-center starting-content'>
           <ReactCSSTransitionGroup transitionName='index' transitionEnterTimeout={0} transitionLeaveTimeout={0}
                                    transitionAppear={true} transitionAppearTimeout={500}>
-            <img className='start-bg' src='dist/images/bilibili_index.jpg'/>
+            <img className='start-bg' src='images/bilibili_index.jpg'/>
           </ReactCSSTransitionGroup>
         </div>
       );
