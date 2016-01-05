@@ -44,9 +44,8 @@ var VideoPart = React.createClass({
       danmuUrl: null,
       //分P列表
       partList: [],
-
-      width: 900,
-      height: 600
+      width: null,
+      height: null
     };
   },
   loadInfo: function () {
@@ -76,8 +75,16 @@ var VideoPart = React.createClass({
     });
   },
   loadVideo: function (cid, quality) {
-    var width = document.getElementById('video-container').offsetWidth;
-    var height = document.body.clientHeight * 0.7;
+    var height = 500;
+    var width = 900;
+    if (window.innerHeight) {
+      height = window.innerHeight * 0.7;
+    }
+    var element = document.getElementById('video-container');
+    if (element != null) {
+      width = element.offsetWidth;
+    }
+
     $.ajax({
       method: 'get',
       url: Lib.BaseUrl + '/video/' + cid + "/" + quality,
@@ -92,7 +99,7 @@ var VideoPart = React.createClass({
         });
       },
       error: function () {
-        this.setState({width: width, height: height, error: true});
+        this.setState({width: width, height: height, error: true, playerLoad: true});
       }
     });
   },

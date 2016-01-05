@@ -12,6 +12,7 @@ import Search from './components/Search';
 import SP from './components/SP';
 import Rank from './components/Rank';
 
+//dom ready
 $(document).ready(function () {
   window.React = React;
 
@@ -25,7 +26,6 @@ $(document).ready(function () {
   render(
     (<Router>
       <Route path="/" component={App}>
-        <Route path="/about" component={About}/>
         <Route path="/sort" component={Sort}/>
         <Route path="/search" component={Search}/>
         <Route path="/sort/:mid" component={SortList}/>

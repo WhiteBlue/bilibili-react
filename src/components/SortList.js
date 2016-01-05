@@ -79,8 +79,6 @@ var SortList = React.createClass({
 
 export default React.createClass({
   render: function () {
-    return <div className="am-animation-slide-right">
-      <SortList mid={this.props.params.mid}/>
-    </div>;
+    return <SortList mid={this.props.params.mid}/>;
   }
 });
