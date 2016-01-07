@@ -14,19 +14,26 @@
 
 .start-bg {
   width: 100%;
+  min-height: 500px;
+  background-image: url('../images/bilibili_index.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90% auto;
 }
 
 .index-footer {
   margin: 20px auto;
 }
 
-#video-container {
-  padding: 0;
-  margin-top: 10px;
-  margin-bottom: 20px;
+.video-info{
+  margin-top: 30px;
 }
 
-#search-form{
+#video-container {
+  margin-top: 10px;
+}
+
+#search-form {
   margin-top: 10px;
   margin-bottom: 10px;
 }

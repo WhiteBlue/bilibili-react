@@ -53,7 +53,7 @@ export default React.createClass({
     }
     return <AMUIReact.Grid>
       <AMUIReact.Col md={8} mdOffset={2} id='video-container'>
-        <video className='video-js vjs-default-skin' id="danmu-player"/>
+        <video className='video-js vjs-default-skin' id="danmu-player" resize="true"/>
       </AMUIReact.Col>
     </AMUIReact.Grid>;
   }

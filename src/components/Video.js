@@ -6,10 +6,42 @@ import Lib from '../Lib'
 
 var Player = require('../VideoPlayer');
 
+//分P选择
+var Pagination = React.createClass({
+  render: function () {
+    var parts = this.props.parts;
+    var nowPlay = this.props.now;
+    var handler = this.props.handler;
+
+    if (!parts || parts.length <= 1) {
+      return <div></div>;
+    }
+
+    var renderList = [];
+    for (var i = 0; i < parts.length; i++) {
+      var cid = parts[i].cid.toString();
+      if (cid != nowPlay.toString()) {
+        renderList.push({title: parts[i].part, link: cid});
+      }
+    }
+
+    var data = {
+      pages: renderList
+    };
+
+    var handleSelect = function (link, e) {
+      e.preventDefault();
+      handler(link);
+    };
+    return <AMUIReact.Pagination onSelect={handleSelect} theme="default" data={data}/>;
+  }
+});
+
+//视频信息
 var VideoInfo = React.createClass({
   render: function () {
     var data = this.props.data;
-    return <AMUIReact.Grid className='doc-g am-text-center'>
+    return <AMUIReact.Grid className='doc-g am-text-center video-info'>
       <AMUIReact.Col md={8} mdOffset={2}>
         <AMUIReact.Col sm={4}>
           <AMUIReact.Thumbnail caption={data.author} src={data.face}/>
@@ -114,10 +146,12 @@ var VideoPart = React.createClass({
       e.preventDefault();
       if (index[0] == 0) {
         this.loadVideo(this.state.cid, index[1] + 1);
-      } else {
-        this.loadVideo(this.state.partList[index[1]].cid, 1);
       }
     }
+  },
+  partSelect: function (cid) {
+    this.setState({playerLoad: false});
+    this.loadVideo(cid, 1);
   },
   render: function () {
     var data = [{
@@ -126,23 +160,12 @@ var VideoPart = React.createClass({
       subCols: 3,
       subMenu: [{link: '##', title: '低清'}, {link: '##', title: '高清'}, {link: '##', title: '原画'}]
     }];
-    if (this.state.partList.length > 1) {
-      var menuList = [];
-      for (var i = 0; i < this.state.partList.length; i++) {
-        menuList.push({title: this.state.partList[i].part});
-      }
-      data.push({
-        link: '##',
-        title: '分集',
-        subCols: menuList.length,
-        subMenu: menuList
-      });
-    }
     if (this.state.error) {
       return <Lib.ErrorWidght />
     }
     return (this.state.load) ?
-      <div><AMUIReact.Menu cols={2} data={data} theme='dropdown2' onSelect={this.handleClick}/>
+      <div><Pagination parts={this.state.partList} now={this.state.cid} handler={this.partSelect}/>
+        <AMUIReact.Menu cols={2} data={data} theme='dropdown2' onSelect={this.handleClick}/>
         {this.state.playerLoad ?
           <Player src={ this.state.videoUrl }
                   width={ this.state.width }
@@ -150,7 +173,8 @@ var VideoPart = React.createClass({
                   danmu={ this.state.danmuUrl }
                   poster={ this.state.data.pic }/> :
           <Lib.LoadingWidght />}
-        <VideoInfo data={this.state.data}/></div> :
+        <VideoInfo data={this.state.data}/>
+      </div> :
       <div><Lib.LoadingWidght /></div>;
   }
 });

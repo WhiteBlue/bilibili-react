@@ -1,5 +1,6 @@
 import videojs from 'video.js'
 
+//定义video.js插件
 var Plugin = {
   load: function () {
     videojs.plugin('ABP', function () {
@@ -22,7 +23,7 @@ var Plugin = {
           this.cmManager.init();
           this.cmManager.clear();
 
-          //Bind control to video.
+          //弹幕控制绑定
           var video = ele.el().children[0];
           var lastPosition = 0;
           video.addEventListener("progress", function () {
@@ -33,6 +34,7 @@ var Plugin = {
               lastPosition = video.currentTime;
           });
 
+          //时间轴更新
           video.addEventListener("timeupdate", function () {
             if (_this.cmManager.display === false) return;
             if (video.hasStalled) {

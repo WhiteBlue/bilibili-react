@@ -56,7 +56,7 @@ var Video = React.createClass({
       options: DEFAULT_VIDEO_OPTIONS,
       onReady: noop,
       eventListeners: {},
-      resize: false,
+      resize: true,
       resizeOptions: {},
       vjsDefaultSkin: true,
       vjsBigPlayCentered: true,
@@ -110,8 +110,8 @@ var Video = React.createClass({
   getVideoPlayerOptions: function () {
     return _defaults(
       {}, this.props.options, {
-        height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
-        width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
+        //height: this.props.resize ? 'auto' : (this.props.height || DEFAULT_HEIGHT),
+        //width: this.props.resize ? 'auto' : (this.props.width || DEFAULT_WIDTH)
       }, DEFAULT_VIDEO_OPTIONS);
   },
   getVideoResizeOptions: function () {
@@ -122,7 +122,6 @@ var Video = React.createClass({
       debounceTime: DEFAULT_RESIZE_DEBOUNCE_TIME
     });
   },
-
   getResizedVideoPlayerMeasurements: function () {
     var resizeOptions = this.getVideoResizeOptions();
     var aspectRatio = resizeOptions.aspectRatio;
@@ -147,7 +146,6 @@ var Video = React.createClass({
   setVideoPlayerSrc: function (src) {
     this._player.src(src);
   },
-  //视频源弹幕地址加载
   mountVideoPlayer: function () {
     var src = this.props.src;
     var danmu = this.props.danmu;
@@ -157,21 +155,26 @@ var Video = React.createClass({
     this._player = vjs(this.getVideoPlayerEl(), options);
 
     var player = this._player;
+
+    //弹幕插件
+    Plugin.load(player);
+
     player.ready(this.handleVideoPlayerReady);
     _forEach(this.props.eventListeners, function (val, key) {
       player.on(key, val);
     });
-    player.src(src);
     if (this.props.poster) {
       player.poster(this.props.poster);
     }
     if (this.props.endlessMode) {
       this.addEndlessMode();
     }
-    //加载弹幕插件
-    Plugin.load(player);
+
+    //资源加载
+    player.src(src);
     player.ABP();
     player.danmu.load(danmu);
+
   },
   unmountVideoPlayer: function () {
     //资源回收
@@ -230,13 +233,14 @@ var Video = React.createClass({
     var player = this._player;
     var videoMeasurements = this.getResizedVideoPlayerMeasurements();
     player.dimensions(videoMeasurements.width, videoMeasurements.height);
+    player.danmu.cmManager.setBounds();
   },
   handleNextVideo: function () {
     this.props.onNextVideo();
   },
   renderDefaultWarning: function () {
     return (
-      <p className="vjs-no-js">都什么年头了...浏览器还不支持Html5...</p>
+      <p className="vjs-no-js">浏览器还不支持Html5...</p>
     );
   },
   _windowHeight: function () {

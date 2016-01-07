@@ -102,6 +102,7 @@ export default React.createClass({
       this.loadingStartData();
       return <Lib.StartWidght />;
     }
+
     if (this.state.error) {
       return <Lib.BadErrorWidght />;
     }
