@@ -56113,33 +56113,35 @@ var _Rank2 = _interopRequireDefault(_Rank);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.React = _react2.default;
+//dom ready
+$(document).ready(function () {
+  window.React = _react2.default;
 
-var Back = _react2.default.createClass({
-  displayName: 'Back',
+  var Back = _react2.default.createClass({
+    displayName: 'Back',
 
-  render: function render() {
-    history.go(-2);
-    return _react2.default.createElement('div', null);
-  }
+    render: function render() {
+      history.go(-2);
+      return _react2.default.createElement('div', null);
+    }
+  });
+
+  (0, _reactDom.render)(_react2.default.createElement(
+    _reactRouter.Router,
+    null,
+    _react2.default.createElement(
+      _reactRouter.Route,
+      { path: '/', component: _App2.default },
+      _react2.default.createElement(_reactRouter.Route, { path: '/sort', component: _Sort2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/search', component: _Search2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/sort/:mid', component: _SortList2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/play/:aid', component: _Video2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/sp/:spid', component: _SP2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/rank', component: _Rank2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/back', component: Back })
+    )
+  ), document.getElementById('content'));
 });
-
-(0, _reactDom.render)(_react2.default.createElement(
-  _reactRouter.Router,
-  null,
-  _react2.default.createElement(
-    _reactRouter.Route,
-    { path: '/', component: _App2.default },
-    _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _About2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/sort', component: _Sort2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/search', component: _Search2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/sort/:mid', component: _SortList2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/play/:aid', component: _Video2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/sp/:spid', component: _SP2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/rank', component: _Rank2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: '/back', component: Back })
-  )
-), document.getElementById('content'));
 
 },{"./components/About":340,"./components/App":341,"./components/Rank":342,"./components/SP":343,"./components/Search":344,"./components/Sort":345,"./components/SortList":346,"./components/Video":347,"react":333,"react-dom":175,"react-router":195}],338:[function(require,module,exports){
 'use strict';
@@ -56208,7 +56210,7 @@ exports.default = {
           _reactAddonsCssTransitionGroup2.default,
           { transitionName: 'index', transitionEnterTimeout: 0, transitionLeaveTimeout: 0,
             transitionAppear: true, transitionAppearTimeout: 500 },
-          _react2.default.createElement('img', { className: 'start-bg', src: 'dist/images/bilibili_index.jpg' })
+          _react2.default.createElement('img', { className: 'start-bg', src: 'images/bilibili_index.jpg' })
         )
       );
     }
@@ -57299,7 +57301,6 @@ var SearchContent = _react2.default.createClass({
     }
   },
   pageAdd: function pageAdd() {
-    alert(this.state.page + 1);
     this.getSearch(this.state.content, this.state.page + 1, this.state.order);
   },
   render: function render() {
@@ -57349,7 +57350,7 @@ exports.default = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       'div',
-      { className: 'am-animation-slide-right' },
+      { className: 'am-animation-slide-left' },
       _react2.default.createElement(SearchContent, null)
     );
   }
@@ -57406,7 +57407,7 @@ exports.default = _react2.default.createClass({
   render: function render() {
     return _react2.default.createElement(
       'div',
-      { className: 'am-animation-slide-left' },
+      { className: 'am-animation-slide-right' },
       _react2.default.createElement(SortList, null)
     );
   }
@@ -57521,11 +57522,7 @@ exports.default = _react2.default.createClass({
   displayName: 'SortList',
 
   render: function render() {
-    return _react2.default.createElement(
-      'div',
-      { className: 'am-animation-slide-right' },
-      _react2.default.createElement(SortList, { mid: this.props.params.mid })
-    );
+    return _react2.default.createElement(SortList, { mid: this.props.params.mid });
   }
 });
 
@@ -57618,9 +57615,8 @@ var VideoPart = _react2.default.createClass({
       danmuUrl: null,
       //分P列表
       partList: [],
-
-      width: 900,
-      height: 600
+      width: null,
+      height: null
     };
   },
   loadInfo: function loadInfo() {
@@ -57650,8 +57646,16 @@ var VideoPart = _react2.default.createClass({
     });
   },
   loadVideo: function loadVideo(cid, quality) {
-    var width = document.getElementById('video-container').offsetWidth;
-    var height = document.body.clientHeight * 0.7;
+    var height = 500;
+    var width = 900;
+    if (window.innerHeight) {
+      height = window.innerHeight * 0.7;
+    }
+    var element = document.getElementById('video-container');
+    if (element != null) {
+      width = element.offsetWidth;
+    }
+
     $.ajax({
       method: 'get',
       url: _Lib2.default.BaseUrl + '/video/' + cid + "/" + quality,
@@ -57666,7 +57670,7 @@ var VideoPart = _react2.default.createClass({
         });
       },
       error: function error() {
-        this.setState({ width: width, height: height, error: true });
+        this.setState({ width: width, height: height, error: true, playerLoad: true });
       }
     });
   },
