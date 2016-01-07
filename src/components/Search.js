@@ -202,7 +202,6 @@ var SearchContent = React.createClass({
     }
   },
   pageAdd: function () {
-    alert(this.state.page + 1);
     this.getSearch(this.state.content, this.state.page + 1, this.state.order);
   },
   render: function () {
@@ -228,7 +227,7 @@ var SearchContent = React.createClass({
 
 export default React.createClass({
   render: function () {
-    return <div className="am-animation-slide-right">
+    return <div className="am-animation-slide-left">
       <SearchContent />
     </div>;
   }

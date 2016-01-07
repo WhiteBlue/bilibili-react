@@ -21,7 +21,7 @@ const SortList = React.createClass({
 export default React.createClass({
   render() {
     return (
-      <div className="am-animation-slide-left">
+      <div className="am-animation-slide-right">
         <SortList/>
       </div>
     );
