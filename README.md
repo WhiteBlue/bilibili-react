@@ -3,7 +3,7 @@
 An unofficial site for "bilibili"
 
 # 演示地址
-* (http://app.shiroblue.cn)[http://whiteblue.github.io/bilibili-react]
+* [http://app.shiroblue.cn](http://whiteblue.github.io/bilibili-react)
 * API基于个人的另一个项目[bilibili-service](https://github.com/WhiteBlue/bilibili-service)
 
 # 功能
