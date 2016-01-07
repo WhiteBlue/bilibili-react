@@ -4,7 +4,3 @@ node_modules
 dist
 .publish
 
-
-*.mp4
-
-minify
